@@ -1,13 +1,28 @@
 package my.converter.main;
 
+import java.awt.Dimension;
 import java.util.Scanner;
+
+import javax.swing.JFrame;
 
 public class Main {
 
-	static String[] hexSymbols = {"0","1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"};
 
 	public static void main(String[] args) {
-		int number;
+		
+		Window frame = new Window(); // construct Window object
+		
+		frame.setPreferredSize(new Dimension(300,300));
+		frame.setMaximumSize(new Dimension(300,300));
+		frame.setMinimumSize(new Dimension(300,300));
+		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);/* make sure that we stop the threads in the game operations */
+		frame.setResizable(false); /* make sure that we cant resize the window */
+		frame.setLocationRelativeTo(null);/* having the window set to the middle */
+		frame.setVisible(true);             // ask it to become visible
+
+		
+		/*int number;
 
 		Scanner in = new Scanner(System.in);
 
@@ -28,60 +43,6 @@ public class Main {
 			System.out.println(convertToOctan(number));
 			System.out.println("Converted back to decimal: "+octanToDecimal(convertToOctan(number)));
 			
-		}
-	}
-
-	private static String convertToBinary(int number) {
-		
-		String binarynumber  = "";
-		
-		while(number > 0) {
-			int reminder = number % 2;
-			binarynumber = String.valueOf(reminder) + binarynumber; 
-			number = (number >> 1);	
-		}
-		
-		return binarynumber; 
-	}
-	
-	private static String convertToHex(int number) {
-		String hexnumber  = "";
-
-		while(number > 0) {
-			int reminder = number % 16;
-			hexnumber = hexSymbols[reminder] + hexnumber; 
-			number = (number >> 4);	
-		}
-
-		return hexnumber; 
-	}
-	
-	private static String convertToOctan(int number) {
-		String octannumber  = "";
-
-		while(number > 0) {
-			int reminder = number % 8;
-			octannumber = hexSymbols[reminder] + octannumber; 
-			number = (number >> 3);	
-		}
-
-		return octannumber; 
-	}
-	
-	private static String octanToDecimal(String number) {
-		int octValue = Integer.parseInt(number, 8);
-		return String.valueOf(octValue);
-	}
-	
-	private static String hexToDecimal(String number) {
-		int hexValue = Integer.parseInt(number, 16);
-		return String.valueOf(hexValue);
-	}
-	
-	private static String binaryToDecimal(String number) {
-		int binaryValue = Integer.parseInt(number, 2);
-		return String.valueOf(binaryValue);
-	}
-	
-	
+		}*/
+	}	
 }
