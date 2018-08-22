@@ -76,6 +76,9 @@ public class Window extends JFrame {
 		public void actionPerformed(ActionEvent evt){
 			Conv ny = new Conv();
 			String hax = number.getText();
+			try {Integer.parseInt(hax); 
+	    	} catch(NumberFormatException e) {return;
+	    	}
 			String binary = ny.convertToBinary((Integer.parseInt(hax)));
 			String hexa = ny.convertToHex((Integer.parseInt(hax)));
 			String octa = ny.convertToOctan((Integer.parseInt(hax)));
