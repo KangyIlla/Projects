@@ -1,6 +1,8 @@
 package My.TypeTest;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
@@ -14,27 +16,28 @@ import javax.swing.text.StyledDocument;
 
 public class Main {
 
-	private static JPanel panel;
-	private static JLabel label;
-	private static JTextPane text;
-	private static JTextField writing;
-	private static String [] book = new String[25];
-	private static int correctWords = 0;
-	private static int countChar = 0;
-	private static int countWords = 0;
-	private static boolean typeStarted = false;
-	private static double startTime = 0.0;
-	private static double endTime = 0.0;
-
-	public static void main(String [] args) {
-		JFrame window = new JFrame("TypeTest");
+	private JPanel panel;
+	private JLabel label;
+	private JFrame window;
+	private JFrame highScore;
+	private JTextPane text;
+	private JTextField writing;
+	private String [] book = new String[25];
+	private int correctWords = 0;
+	private int countChar = 0;
+	private int countWords = 0;
+	private boolean typeStarted = false;
+	private double startTime = 0.0;
+	private double endTime = 0.0;
+	
+	public Main(String filename) {
+		window = new JFrame("TypeTest");
 		window.setPreferredSize(new Dimension(400,400));
 		window.setMaximumSize(new Dimension(400,400));
 		window.setMinimumSize(new Dimension(400,400));
 
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
-		//window.setLocationRelativeTo(null); 
 
 		panel = new JPanel(new GridBagLayout()); 
 		window.add(panel);
@@ -42,10 +45,8 @@ public class Main {
 		c.insets = new Insets(10,10,10,10);
 
 		text = new JTextPane();
-		readFile("mybook.txt");
+		readFile(filename);
 		setTextField();
-		//text.setLineWrap(true);
-		//text.setWrapStyleWord(true);
 		text.setPreferredSize(new Dimension(200,150));
 		text.setEditable(false);
 		c.fill = GridBagConstraints.HORIZONTAL;
@@ -62,10 +63,13 @@ public class Main {
 
 
 		window.setVisible(true);
-
 	}
 
-	public static void readFile(String fileName) {
+	public static void main(String [] args) {
+		Main ny = new Main("mybook.txt");
+	}
+
+	public void readFile(String fileName) {
 		Scanner in;
 		try{
 			in = new Scanner(new File(fileName));
@@ -85,7 +89,7 @@ public class Main {
 
 	}
 
-	public static void setTextField() {
+	public void setTextField() {
 		String textOut="";
 		for(int i = 0;i < book.length;i++) {
 			textOut=textOut+" "+book[i];
@@ -93,8 +97,8 @@ public class Main {
 		text.setText(textOut);
 	}
 
-	public static void getHighScore(double timediff, int words) {
-		JFrame highScore = new JFrame("HighScore");
+	public void getHighScore(double timediff, int words) {
+		highScore = new JFrame("HighScore");
 		highScore.setPreferredSize(new Dimension(350,200));
 		highScore.setMaximumSize(new Dimension(350,200));
 		highScore.setMinimumSize(new Dimension(350,200));
@@ -115,7 +119,7 @@ public class Main {
 		panel2.add(label, c2);
 		
 		JTextField time = new JTextField();
-		double wordsPerMinute = (timediff/words)*60000;
+		double wordsPerMinute = (words/timediff)*60000;
 		String out = "Words Per Minute was: " + wordsPerMinute;
 		time.setText(out);
 		time.setEditable(false);
@@ -123,11 +127,18 @@ public class Main {
 		c2.gridx = 0;
 		c2.gridy = 1;
 		panel2.add(time, c2);
+		
+		JButton restart = new JButton("Restart");
+		restart.addActionListener(new Action());
+		c2.fill = GridBagConstraints.HORIZONTAL;
+		c2.gridx = 0;
+		c2.gridy = 2;
+		panel2.add(restart, c2);
 
 		highScore.setVisible(true);
 	}
 	
-	public static void setColour(boolean colour, int charCount, int wordCount) {
+	public void setColour(boolean colour, int charCount, int wordCount) {
 		SimpleAttributeSet attrs = new SimpleAttributeSet();
 		SimpleAttributeSet attrs2 = new SimpleAttributeSet();
 		StyleConstants.setForeground(attrs, Color.decode("#228B22"));
@@ -142,9 +153,16 @@ public class Main {
 		}
 	}
 	
+	class Action implements ActionListener{
+		public void actionPerformed(ActionEvent evt){
+			window.dispose();
+			highScore.dispose();
+			Main nyTest = new Main("mybook.txt");
+		}
+	}
+	
 
-	static class KeyPress implements KeyListener{
-
+	class KeyPress implements KeyListener{
 		public void keyPressed(KeyEvent k) {
 			if(!typeStarted) {
 				typeStarted = true;
